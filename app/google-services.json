@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "332048408850",
+    "project_id": "readzonechab",
+    "storage_bucket": "readzonechab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332048408850:android:5a6412109776fd429f13cb",
+        "android_client_info": {
+          "package_name": "com.example.readingzone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfIip63dArPGmNs9-5TBJxfAubPXysH-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
