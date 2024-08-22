@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
+import java.io.InputStream
 
 class BookServiceImpl(
     private val firestore: FirebaseFirestore,
@@ -109,25 +110,29 @@ class BookServiceImpl(
         }
     }
 
-    override suspend fun downloadBook(url: String): Response<ByteArray> {
+    override suspend fun downloadBook(url: String): Response<InputStream> {
         return try {
             val bookRes = storage.child(url)
-                .getBytes(StorageDefaults.ONE_MEGABYTE)
+                .stream
                 .await()
 
-            Response.Success(bookRes)
+            val inputStream=bookRes.stream
+
+            Response.Success(inputStream)
         } catch (e: Exception) {
             Response.Error(e)
         }
     }
 
-    override suspend fun downloadBookImage(url: String): Response<ByteArray> {
+    override suspend fun downloadBookImage(url: String): Response<InputStream> {
         return try {
             val bookRes = storage.child(url)
-                .getBytes(StorageDefaults.ONE_MEGABYTE)
+                .stream
                 .await()
 
-            Response.Success(bookRes)
+            val inputStream=bookRes.stream
+
+            Response.Success(inputStream)
         } catch (e: Exception) {
             Response.Error(e)
         }

@@ -2,55 +2,50 @@ package com.example.cache.file_manager_impl
 
 import android.content.Context
 import com.example.cache.file_manager.SavedBookManager
-import com.example.cache.utils.FileDefaults
 import com.example.domain.model.Response
-import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.*
 
 class SavedBookManagerImpl(
     private val context: Context
 ) : SavedBookManager {
-    override suspend fun saveBook(fileName: String, content: ByteArray): Response<String> {
+    override suspend fun saveBook(path: String, content: InputStream): Response<Boolean> {
         return try {
-            val pathDef = getCurrentDir() + FileDefaults.BOOKS_FOLDER + fileName
-            val path = pathDef+generateName(pathDef, fileName)
+            val file = File(path)
 
-            context.openFileOutput(path, Context.MODE_PRIVATE).use { outputStream ->
-                outputStream.write(content)
+            withContext(Dispatchers.IO) {
+                FileOutputStream(file).use { outputStream ->
+                    val buffer = ByteArray(8 * 1024)
+                    var bytesRead: Int
+
+                    while (content.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                }
             }
 
-            return Response.Success(path)
+            Response.Success(true)
         } catch (e: Exception) {
             Response.Error(e)
         }
     }
 
-    override suspend fun readBook(fileName: String): Response<ByteArray> {
+    override suspend fun readBook(path: String): Response<InputStream> {
         return try {
-            val path=getCurrentDir()+fileName
+            val file = File(path)
 
-            context.openFileInput(path).bufferedReader().useLines { lines->
-                lines.
+            if (file.exists() && file.isFile) {
+                val inputStream = withContext(Dispatchers.IO) {
+                    FileInputStream(file)
+                }
+                Response.Success(inputStream)
+            } else {
+                Response.Error(FileNotFoundException("File not found or is not a file: $path"))
             }
-
-            Response.Success()
         } catch (e: Exception) {
             Response.Error(e)
         }
     }
 
-    private fun generateName(path: String, fileName: String): String {
-        var newName = fileName
-        var count = 0
-
-        while (!checkFileExists(path + newName)) {
-            count++
-            newName = fileName + "(${count})"
-        }
-
-        return newName
-    }
-
-    private fun getCurrentDir()=context.filesDir.path
-
-    private fun checkFileExists(path: String) = File(path).exists()
 }

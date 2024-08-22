@@ -7,6 +7,7 @@ import com.example.domain.model.Response
 import com.example.domain.parameters.SearchParam
 import com.example.remote.mapper.BookMapper
 import com.example.remote.service.BookService
+import java.io.InputStream
 
 class BookRemoteImpl(
     private val bookService: BookService
@@ -69,11 +70,11 @@ class BookRemoteImpl(
         }
     }
 
-    override suspend fun downloadBook(url: String): Response<ByteArray> {
-        TODO("Not yet implemented")
+    override suspend fun downloadBook(url: String): Response<InputStream> {
+        return bookService.downloadBook(url)
     }
 
-    override suspend fun downloadBookImage(url: String): Response<ByteArray> {
-        TODO("Not yet implemented")
+    override suspend fun downloadBookImage(url: String): Response<InputStream> {
+        return bookService.downloadBookImage(url)
     }
 }

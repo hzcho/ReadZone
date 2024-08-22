@@ -1,8 +1,9 @@
 package com.example.cache.file_manager
 
 import com.example.domain.model.Response
+import java.io.InputStream
 
 interface SavedBookManager {
-    suspend fun saveBook(fileName:String, content:ByteArray): Response<String>
-    suspend fun readBook(fileName:String):Response<ByteArray>
+    suspend fun saveBook(path:String, content:InputStream): Response<Boolean>
+    suspend fun readBook(path:String):Response<InputStream>
 }
