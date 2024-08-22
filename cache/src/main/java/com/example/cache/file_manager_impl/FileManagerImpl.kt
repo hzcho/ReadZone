@@ -1,16 +1,16 @@
 package com.example.cache.file_manager_impl
 
 import android.content.Context
-import com.example.cache.file_manager.SavedBookManager
+import com.example.cache.file_manager.FileManager
 import com.example.domain.model.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 
-class SavedBookManagerImpl(
+class FileManagerImpl(
     private val context: Context
-) : SavedBookManager {
-    override suspend fun saveBook(path: String, content: InputStream): Response<Boolean> {
+) : FileManager {
+    override suspend fun save(path: String, content: InputStream): Response<Boolean> {
         return try {
             val file = File(path)
 

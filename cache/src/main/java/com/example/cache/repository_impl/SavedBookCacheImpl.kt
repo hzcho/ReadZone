@@ -6,6 +6,7 @@ import com.example.data.repository.SavedBookCache
 import com.example.domain.model.Response
 import com.example.domain.parameters.LocalPaginationParam
 import com.example.domain.parameters.SaveBookParam
+import java.io.InputStream
 
 class SavedBookCacheImpl(
     private val savedBookDao: SavedBookDao
@@ -18,7 +19,7 @@ class SavedBookCacheImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getSavedBookRes(path: String): Response<ByteArray> {
+    override suspend fun getSavedBookRes(path: String): Response<InputStream> {
         TODO("Not yet implemented")
     }
 }

@@ -10,6 +10,6 @@ data class SaveBookParam(
     val description:String,
     val format:String,
     val categories:List<CategoryModel>,
-    val imageBytes:InputStream,
+    val imageRes:InputStream,
     val bookRes:InputStream
 )

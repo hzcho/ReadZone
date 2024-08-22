@@ -42,7 +42,7 @@ class DownloadAndSaveBook(
                 authorName = param.authorName,
                 description = param.description,
                 format = param.format,
-                imageBytes = imageRes,
+                imageRes = imageRes,
                 bookRes = bookRes,
                 categories = categoryIds
             )

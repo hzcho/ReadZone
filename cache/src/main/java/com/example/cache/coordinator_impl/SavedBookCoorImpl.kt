@@ -3,31 +3,53 @@ package com.example.cache.coordinator_impl
 import android.content.Context
 import com.example.cache.coordinator.SavedBookCoordinator
 import com.example.cache.dao.SavedBookDao
-import com.example.cache.file_manager.SavedBookManager
+import com.example.cache.file_manager.FileManager
+import com.example.cache.mapper.SavedBookMapper
 import com.example.cache.utils.FileDefaults
 import com.example.data.model.SavedBookEntity
 import com.example.domain.model.Response
 import com.example.domain.parameters.LocalPaginationParam
 import com.example.domain.parameters.SaveBookParam
 import java.io.File
+import java.io.InputStream
+
+typealias cacheSavedBook=com.example.cache.model.SavedBookEntity
 
 class SavedBookCoorImpl(
     private val context: Context,
-    private val savedBookManager: SavedBookManager,
+    private val fileManager: FileManager,
     private val savedBookDao: SavedBookDao
-):SavedBookCoordinator {
+) : SavedBookCoordinator {
     override suspend fun saveBook(param: SaveBookParam): Response<SavedBookEntity> {
         return try {
-            val defPath=getCurrentDir()+FileDefaults.BOOKS_FOLDER
-            val newName=generateName(defPath, param.name)
-            val path=defPath+newName
+            val defPath = getCurrentDir()
+            val commonName = generateName(defPath+ FileDefaults.BOOKS_FOLDER, param.name)
+            val bookPath = defPath + commonName
+            val imagePath=defPath+FileDefaults.BOOK_IMAGES_FOLDER+commonName
 
-            savedBookManager.saveBook(path, param.bookRes)
+            val saveBookResult = fileManager.save(bookPath, param.bookRes)
+            if (saveBookResult is Response.Error) return saveBookResult
 
+            val saveImageResult=fileManager.save(imagePath, param.imageRes)
+            if (saveImageResult is Response.Error) return saveImageResult
 
+            val cacheSavedBook=cacheSavedBook(
+                savedBookId = param.id,
+                name = param.name,
+                authorName = param.authorName,
+                imagePath = imagePath,
+                description = param.description,
+                format = param.format,
+                resPath = bookPath,
+                currentPage = 0,
+                allPages = 0 //TODO change
+            )
+            savedBookDao.insertSavedBook(savedBook =cacheSavedBook)
 
-            Response.Success()
-        }catch (e:Exception){
+            val dataSavedBook=SavedBookMapper.fromCache(cacheSavedBook)
+
+            Response.Success(dataSavedBook)
+        } catch (e: Exception) {
             Response.Error(e)
         }
     }
@@ -36,7 +58,7 @@ class SavedBookCoorImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getSavedBookRes(path: String): Response<ByteArray> {
+    override suspend fun getSavedBookRes(path: String): Response<InputStream> {
         TODO("Not yet implemented")
     }
 
@@ -52,7 +74,7 @@ class SavedBookCoorImpl(
         return newName
     }
 
-    private fun getCurrentDir()=context.filesDir.path
+    private fun getCurrentDir() = context.filesDir.path
 
     private fun checkFileExists(path: String) = File(path).exists()
 

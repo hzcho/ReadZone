@@ -6,6 +6,7 @@ import com.example.domain.model.*
 import com.example.domain.parameters.LocalPaginationParam
 import com.example.domain.parameters.SaveBookParam
 import com.example.domain.repository.SavedBookRepository
+import java.io.InputStream
 
 class SavedBookRepositoryImpl(
     private val savedBookCache: SavedBookCache
@@ -38,7 +39,7 @@ class SavedBookRepositoryImpl(
         }
     }
 
-    override suspend fun getSavedBookRes(path: String): Response<ByteArray> {
+    override suspend fun getSavedBookRes(path: String): Response<InputStream> {
         return savedBookCache.getSavedBookRes(path=path)
     }
 }
