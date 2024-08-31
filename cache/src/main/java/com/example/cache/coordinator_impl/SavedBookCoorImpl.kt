@@ -55,11 +55,18 @@ class SavedBookCoorImpl(
     }
 
     override suspend fun getSavedBooks(param: LocalPaginationParam): Response<List<SavedBookEntity>> {
-        TODO("Not yet implemented")
+        return try {
+            val cacheSavedBooks=savedBookDao.getSavedBooks(param.limit, param.limit*param.page)
+            val dataSavedBooks=cacheSavedBooks.map { SavedBookMapper.fromCache(it) }
+
+            Response.Success(dataSavedBooks)
+        }catch (e: Exception){
+            Response.Error(e)
+        }
     }
 
     override suspend fun getSavedBookRes(path: String): Response<InputStream> {
-        TODO("Not yet implemented")
+        return fileManager.readBook(path)
     }
 
     private fun generateName(path: String, fileName: String): String {

@@ -1,5 +1,6 @@
 package com.example.cache.repository_impl
 
+import com.example.cache.coordinator.SavedBookCoordinator
 import com.example.cache.dao.SavedBookDao
 import com.example.data.model.SavedBookEntity
 import com.example.data.repository.SavedBookCache
@@ -9,17 +10,17 @@ import com.example.domain.parameters.SaveBookParam
 import java.io.InputStream
 
 class SavedBookCacheImpl(
-    private val savedBookDao: SavedBookDao
+    private val savedBookCoor:SavedBookCoordinator
 ): SavedBookCache {
     override suspend fun saveBook(param: SaveBookParam): Response<SavedBookEntity> {
-        TODO("Not yet implemented")
+        return savedBookCoor.saveBook(param)
     }
 
     override suspend fun getSavedBooks(param: LocalPaginationParam): Response<List<SavedBookEntity>> {
-        TODO("Not yet implemented")
+        return savedBookCoor.getSavedBooks(param)
     }
 
     override suspend fun getSavedBookRes(path: String): Response<InputStream> {
-        TODO("Not yet implemented")
+        return savedBookCoor.getSavedBookRes(path)
     }
 }
