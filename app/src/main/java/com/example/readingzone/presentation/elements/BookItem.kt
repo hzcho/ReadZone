@@ -177,7 +177,8 @@ fun BookItemPreview() {
                 resUrl = "Kenyada",
                 format = "txt",
                 likeCount = 90,
-                dislikeCount = 10
+                dislikeCount = 10,
+                categoryIds = emptyList()
             )
         )
     }

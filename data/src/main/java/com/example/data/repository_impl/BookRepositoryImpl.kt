@@ -7,6 +7,7 @@ import com.example.domain.parameters.PaginationParam
 import com.example.domain.model.Response
 import com.example.domain.parameters.SearchParam
 import com.example.domain.repository.BookRepository
+import java.io.InputStream
 
 class BookRepositoryImpl(
     private val bookRemote: BookRemote
@@ -44,11 +45,11 @@ class BookRepositoryImpl(
         }
     }
 
-    override suspend fun downloadBook(url: String): Response<ByteArray> {
+    override suspend fun downloadBook(url: String): Response<InputStream> {
         return bookRemote.downloadBookImage(url=url)
     }
 
-    override suspend fun downloadBookImage(url: String): Response<ByteArray> {
+    override suspend fun downloadBookImage(url: String): Response<InputStream> {
         return bookRemote.downloadBookImage(url=url)
     }
 }

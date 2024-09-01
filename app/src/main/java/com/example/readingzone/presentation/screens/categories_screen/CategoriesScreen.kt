@@ -114,7 +114,8 @@ fun CategoriesScreenPreview() {
                                 resUrl = "Stephan",
                                 format = "Latorya",
                                 likeCount = 9355,
-                                dislikeCount = 562
+                                dislikeCount = 562,
+                                categoryIds = emptyList()
                             ),
                             BookModel(
                                 id = "Jessi",
@@ -125,7 +126,8 @@ fun CategoriesScreenPreview() {
                                 resUrl = "Stephan",
                                 format = "Latorya",
                                 likeCount = 9355,
-                                dislikeCount = 562
+                                dislikeCount = 562,
+                                categoryIds = emptyList()
                             )
                         )
                     )

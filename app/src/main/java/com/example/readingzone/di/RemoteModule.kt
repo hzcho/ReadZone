@@ -18,6 +18,7 @@ import com.example.remote.service_impl.CategoryServiceImpl
 import com.example.remote.service_impl.UserServiceImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,8 +38,12 @@ object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideBookService(firestore: FirebaseFirestore):BookService{
-        return BookServiceImpl(firestore=firestore)
+    fun provideStorage()=FirebaseStorage.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideBookService(firestore: FirebaseFirestore, storage:FirebaseStorage):BookService{
+        return BookServiceImpl(firestore=firestore, storage = storage)
     }
 
     @Provides

@@ -10,13 +10,14 @@ import com.example.remote.utils.CollectionDefaults
 import com.example.remote.utils.StorageDefaults
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
 import java.io.InputStream
 
 class BookServiceImpl(
     private val firestore: FirebaseFirestore,
-    private val storage: StorageReference
+    private val storage: FirebaseStorage
 ) : BookService {
     override suspend fun getBooks(param: PaginationParam): Response<List<BookModel>> {
         return try {
@@ -112,7 +113,7 @@ class BookServiceImpl(
 
     override suspend fun downloadBook(url: String): Response<InputStream> {
         return try {
-            val bookRes = storage.child(url)
+            val bookRes = storage.reference.child(url)
                 .stream
                 .await()
 
@@ -126,7 +127,7 @@ class BookServiceImpl(
 
     override suspend fun downloadBookImage(url: String): Response<InputStream> {
         return try {
-            val bookRes = storage.child(url)
+            val bookRes = storage.reference.child(url)
                 .stream
                 .await()
 

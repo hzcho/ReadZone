@@ -129,7 +129,8 @@ fun AllBooksPreview() {
                         resUrl = "Serafin",
                         format = "txt",
                         likeCount = 0,
-                        dislikeCount = 0
+                        dislikeCount = 0,
+                        categoryIds = emptyList()
                     )
                 )
             ),

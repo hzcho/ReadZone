@@ -1,9 +1,6 @@
 package com.example.readingzone.di
 
-import com.example.domain.repository.AuthRepository
-import com.example.domain.repository.BookRepository
-import com.example.domain.repository.CategoryRepository
-import com.example.domain.repository.UserRepository
+import com.example.domain.repository.*
 import com.example.domain.usecase.auth.CheckUserReg
 import com.example.domain.usecase.auth.SignInUser
 import com.example.domain.usecase.auth.SignOutUser
@@ -13,6 +10,8 @@ import com.example.domain.usecase.book.GetBooksByPage
 import com.example.domain.usecase.book.SearchBooks
 import com.example.domain.usecase.category.GetBookIdsByCategory
 import com.example.domain.usecase.category.GetCategories
+import com.example.domain.usecase.saved_books.GetSavedBookRes
+import com.example.domain.usecase.saved_books.Read
 import com.example.domain.usecase.user.*
 import dagger.Module
 import dagger.Provides
@@ -123,5 +122,17 @@ object DomainModule {
     @Singleton
     fun provideSearchBooks(bookRepository: BookRepository): SearchBooks {
         return SearchBooks(bookRepository =bookRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRead(savedBookRepository: SavedBookRepository):Read{
+        return Read(savedBookRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSavedBookRes(savedBookRepository: SavedBookRepository):GetSavedBookRes{
+        return GetSavedBookRes(savedBookRepository)
     }
 }
